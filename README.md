@@ -5,3 +5,4 @@
 ##Tools
 FastAPI
 Docker
+Pytest
