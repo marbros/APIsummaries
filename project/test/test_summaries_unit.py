@@ -6,7 +6,7 @@ from datetime import datetime
 
 import pytest
 
-from app.api import crud, summaries
+from app.api import crud
 
 
 def test_create_summary(test_app, monkeypatch):
@@ -210,7 +210,6 @@ def test_update_summary_invalid(test_app, monkeypatch, summary_id, payload, stat
     response = test_app.put(f"/summaries/{summary_id}/", data=json.dumps(payload))
     assert response.status_code == status_code
     assert response.json()["detail"] == detail
-
 
 # def test_update_summary_invalid_url(test_app):
 #     response = test_app.put(
