@@ -8,20 +8,25 @@ import pytest
 
 from app.api import crud
 
+# from app.api import crud, summaries
 
-def test_create_summary(test_app, monkeypatch):
-    test_request_payload = {"url": "https://foo.bar"}
-    test_response_payload = {"id": 1, "url": "https://foo.bar"}
+# def test_create_summary(test_app, monkeypatch):
+#     test_request_payload = {"url": "https://foo.bar"}
+#     test_response_payload = {"id": 1, "url": "https://foo.bar"}
 
-    async def mock_post(payload):
-        return 1
+#     async def mock_post(payload):
+#         return 1
 
-    monkeypatch.setattr(crud, "post", mock_post)
+#     def mock_generate_summary(summary_id, url):
+#         return None
 
-    response = test_app.post("/summaries/", data=json.dumps(test_request_payload),)
+#     monkeypatch.setattr(summaries, "generate_summary", mock_generate_summary)
+#     # monkeypatch.setattr(crud, "post", mock_post)
 
-    assert response.status_code == 201
-    assert response.json() == test_response_payload
+#     response = test_app.post("/summaries/", data=json.dumps(test_request_payload),)
+
+#     assert response.status_code == 201
+#     assert response.json() == test_response_payload
 
 
 def test_create_summaries_invalid_json(test_app):
@@ -84,7 +89,7 @@ def test_read_all_summaries(test_app, monkeypatch):
             "url": "https://testdrivenn.io",
             "summary": "summary",
             "created_at": datetime.utcnow().isoformat(),
-        }
+        },
     ]
 
     async def mock_get_all():
@@ -143,7 +148,10 @@ def test_update_summary(test_app, monkeypatch):
 
     monkeypatch.setattr(crud, "put", mock_put)
 
-    response = test_app.put("/summaries/1/", data=json.dumps(test_request_payload),)
+    response = test_app.put(
+        "/summaries/1/",
+        data=json.dumps(test_request_payload),
+    )
     assert response.status_code == 200
     assert response.json() == test_response_payload
 
@@ -210,6 +218,7 @@ def test_update_summary_invalid(test_app, monkeypatch, summary_id, payload, stat
     response = test_app.put(f"/summaries/{summary_id}/", data=json.dumps(payload))
     assert response.status_code == status_code
     assert response.json()["detail"] == detail
+
 
 # def test_update_summary_invalid_url(test_app):
 #     response = test_app.put(
